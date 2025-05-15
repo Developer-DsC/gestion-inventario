@@ -1,0 +1,31 @@
+<form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+    <label>
+    Nombre:
+    <input formControlName="nombre" />
+  </label>
+
+    <label>
+    Stock:
+    <input type="number" formControlName="stock" />
+  </label>
+
+    <label>
+    Precio:
+    <input type="number" formControlName="precio" />
+  </label>
+
+    <label>
+    Bodega:
+   <select formControlName="bodega_id">
+  <option [value]="null">-- Selecciona una bodega --</option>
+  <option *ngFor="let bodega of bodegas" [value]="bodega.id">
+    {{ bodega.nombre }} - {{ bodega.ciudad }}
+  </option>
+</select>
+  </label>
+
+    <div class="botones">
+        <button type="submit" [disabled]="formulario.invalid">Guardar</button>
+        <button type="button" (click)="onCancel()">Cancelar</button>
+    </div>
+</form>

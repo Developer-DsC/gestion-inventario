@@ -1,0 +1,65 @@
+<h1 class="titulo-principal">Sistema de Gestión de Inventario</h1>
+
+<button (click)="mostrarFormularioBodega = true">Agregar Bodega</button>
+<button (click)="nuevoProducto()">Agregar Producto</button>
+
+<div class="filtros">
+    <label>
+    Ciudad:
+    <input [(ngModel)]="ciudadFiltro" placeholder="Filtrar por ciudad" />
+  </label>
+    <label>
+    Stock mínimo:
+    <input type="number" [(ngModel)]="stockMinimo" />
+  </label>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Stock</th>
+            <th>Precio</th>
+            <th>ID Bodega</th>
+            <th>Ciudad</th>
+            <th>Clima Actual</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let p of productosFiltrados">
+            <td>{{ p.nombre }}</td>
+            <td>{{ p.stock }}</td>
+            <td>{{ p.precio }}</td>
+            <td>{{ p.bodega_nombre }}</td>
+            <td>{{ p.ciudad }}</td>
+            <td>{{ p.climaActual }}</td>
+            <td>
+                <button (click)="editarProducto(p)">Editar</button>
+                <button (click)="eliminarProducto(p.id)">Eliminar</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<!-- Modal para agregar bodega -->
+<div class="modal-backdrop" *ngIf="mostrarFormularioBodega" (click)="mostrarFormularioBodega = false">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <form (ngSubmit)="crearBodega()">
+            <h3>Nueva Bodega</h3>
+            <input [(ngModel)]="bodegaNueva.nombre" name="nombre" placeholder="Nombre de bodega" required />
+            <input [(ngModel)]="bodegaNueva.ciudad" name="ciudad" placeholder="Ciudad" required />
+            <button type="submit">Guardar</button>
+            <button type="button" (click)="mostrarFormularioBodega = false">Cancelar</button>
+        </form>
+    </div>
+</div>
+
+<!-- Modal para agregar o editar producto -->
+<div class="modal-backdrop" *ngIf="mostrarFormularioProducto" (click)="cancelarEdicion()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <h3>{{ productoEditando?.id ? 'Editar Producto' : 'Agregar Producto' }}</h3>
+        <app-producto-form [producto]="productoEditando" [bodegas]="bodegas" (guardar)="manejarGuardar($event)" (cancelar)="cancelarEdicion()">
+        </app-producto-form>
+    </div>
+</div>
